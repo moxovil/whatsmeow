@@ -362,6 +362,10 @@ func (cli *Client) sendProtocolMessageReceipt(id, msgType string) {
 	if len(id) == 0 {
 		return
 	}
+	if cli.Store.ID == nil {
+		cli.Log.Warnf("failed seng receipt. Store.ID is nil")
+		return
+	}
 	err := cli.sendNode(waBinary.Node{
 		Tag: "receipt",
 		Attrs: waBinary.Attrs{
