@@ -418,6 +418,16 @@ func (cli *Client) handlerQueueLoop(ctx context.Context) {
 	for {
 		select {
 		case node := <-cli.handlerQueue:
+			defer func() {
+				tag := "nil tag"
+				if node != nil {
+					tag = node.Tag
+				}
+				err := recover()
+				if err != nil {
+					cli.Log.Errorf(fmt.Sprintf("Queue loop handler panicked while handling node \"%v\": %v\n%s", tag, err, debug.Stack()))
+				}
+			}()
 			cli.nodeHandlers[node.Tag](node)
 		case <-ctx.Done():
 			return
