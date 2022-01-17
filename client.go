@@ -119,16 +119,14 @@ const handlerQueueSize = 2048
 //     }
 //     client := whatsmeow.NewClient(deviceStore, nil)
 func NewClient(deviceStore *store.Device, log waLog.Logger) *Client {
-	if log == nil {
-		log = waLog.Noop
-	}
+	logNoop := waLog.Noop
 	randomBytes := make([]byte, 2)
 	_, _ = rand.Read(randomBytes)
 	cli := &Client{
 		Store:           deviceStore,
 		Log:             log,
-		recvLog:         log.Sub("Recv"),
-		sendLog:         log.Sub("Send"),
+		recvLog:         logNoop.Sub("Recv"),
+		sendLog:         logNoop.Sub("Send"),
 		uniqueID:        fmt.Sprintf("%d.%d-", randomBytes[0], randomBytes[1]),
 		responseWaiters: make(map[string]chan<- *waBinary.Node),
 		eventHandlers:   make([]wrappedEventHandler, 0, 1),
