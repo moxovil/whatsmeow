@@ -119,6 +119,9 @@ const handlerQueueSize = 2048
 //     }
 //     client := whatsmeow.NewClient(deviceStore, nil)
 func NewClient(deviceStore *store.Device, log waLog.Logger) *Client {
+	if log == nil {
+		log = waLog.Noop
+	}
 	logNoop := waLog.Noop
 	randomBytes := make([]byte, 2)
 	_, _ = rand.Read(randomBytes)
