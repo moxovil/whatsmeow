@@ -254,7 +254,7 @@ func (cli *Client) updatePushName(user types.JID, messageInfo *types.MessageInfo
 	if err != nil {
 		cli.Log.Errorf("Failed to save push name of %s in device store: %v", user, err)
 	} else if changed {
-		cli.Log.Debugf("Push name of %s changed from %s to %s, dispatching event", user, previousName, name)
+		//cli.Log.Debugf("Push name of %s changed from %s to %s, dispatching event", user, previousName, name)
 		cli.dispatchEvent(&events.PushName{
 			JID:         user,
 			Message:     messageInfo,

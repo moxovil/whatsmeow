@@ -410,9 +410,10 @@ func (cli *Client) handleFrame(data []byte) {
 				cli.handlerQueue <- node
 			}()
 		}
-	} else {
-		cli.Log.Debugf("Didn't handle WhatsApp node %s", node.Tag)
 	}
+	/*else {
+		cli.Log.Debugf("Didn't handle WhatsApp node %s", node.Tag)
+	}*/
 }
 
 func (cli *Client) handlerQueueLoop(ctx context.Context) {

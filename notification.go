@@ -56,7 +56,7 @@ func (cli *Client) handleAppStateNotification(node *waBinary.Node) {
 		err := cli.FetchAppState(name, false, false)
 		if errors.Is(err, ErrIQDisconnected) || errors.Is(err, ErrNotConnected) {
 			// There are some app state changes right before a remote logout, so stop syncing if we're disconnected.
-			cli.Log.Debugf("Failed to sync app state after notification: %v, not trying to sync other states", err)
+			//cli.Log.Debugf("Failed to sync app state after notification: %v, not trying to sync other states", err)
 			return
 		} else if err != nil {
 			cli.Log.Errorf("Failed to sync app state after notification: %v", err)
@@ -83,7 +83,7 @@ func (cli *Client) handlePictureNotification(node *waBinary.Node) {
 			continue
 		}
 		if !ag.OK() {
-			cli.Log.Debugf("Ignoring picture change notification with unexpected attributes: %v", ag.Error())
+			//cli.Log.Debugf("Ignoring picture change notification with unexpected attributes: %v", ag.Error())
 			continue
 		}
 		cli.dispatchEvent(&evt)
@@ -180,6 +180,7 @@ func (cli *Client) handleNotification(node *waBinary.Node) {
 	if !ag.OK() {
 		return
 	}
+	//cli.Log.Debugf("Received %s update", notifType)
 	go cli.sendAck(node)
 	switch notifType {
 	case "encrypt":

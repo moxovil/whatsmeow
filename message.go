@@ -120,7 +120,7 @@ func (cli *Client) decryptMessages(info *types.MessageInfo, node *waBinary.Node)
 		return
 	}
 	children := node.GetChildren()
-	cli.Log.Debugf("Decrypting %d messages from %s", len(children), info.SourceString())
+	//cli.Log.Debugf("Decrypting %d messages from %s", len(children), info.SourceString())
 	handled := false
 	for _, child := range children {
 		if child.Tag != "enc" {
@@ -141,7 +141,7 @@ func (cli *Client) decryptMessages(info *types.MessageInfo, node *waBinary.Node)
 			continue
 		}
 		if err != nil {
-			cli.Log.Warnf("Error decrypting message from %s: %v", info.SourceString(), err)
+			//cli.Log.Warnf("Error decrypting message from %s: %v", info.SourceString(), err)
 			go cli.sendRetryReceipt(node, false)
 			cli.dispatchEvent(&events.UndecryptableMessage{Info: *info, IsUnavailable: false})
 			return
@@ -258,7 +258,7 @@ func (cli *Client) handleSenderKeyDistributionMessage(chat, from types.JID, rawS
 		return
 	}
 	builder.Process(senderKeyName, sdkMsg)
-	cli.Log.Debugf("Processed sender key distribution message from %s in %s", senderKeyName.Sender().String(), senderKeyName.GroupID())
+	//cli.Log.Debugf("Processed sender key distribution message from %s in %s", senderKeyName.Sender().String(), senderKeyName.GroupID())
 }
 
 func (cli *Client) handleHistorySyncNotification(notif *waProto.HistorySyncNotification) {
@@ -369,7 +369,7 @@ func (cli *Client) sendProtocolMessageReceipt(id, msgType string) {
 		return
 	}
 	if cli.Store.ID == nil {
-		cli.Log.Warnf("failed seng receipt. Store.ID is nil")
+		cli.Log.Warnf("Failed to send receipt. Store.ID is nil")
 		return
 	}
 	err := cli.sendNode(waBinary.Node{
