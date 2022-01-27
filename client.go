@@ -118,18 +118,23 @@ const handlerQueueSize = 2048
 //         panic(err)
 //     }
 //     client := whatsmeow.NewClient(deviceStore, nil)
-func NewClient(deviceStore *store.Device, log waLog.Logger) *Client {
+func NewClient(deviceStore *store.Device, log waLog.Logger, isSocketLogOn bool) *Client {
 	if log == nil {
 		log = waLog.Noop
 	}
-	logNoop := waLog.Noop
+	var socketLog waLog.Logger
+	if isSocketLogOn {
+		socketLog = log
+	} else {
+		socketLog = waLog.Noop
+	}
 	randomBytes := make([]byte, 2)
 	_, _ = rand.Read(randomBytes)
 	cli := &Client{
 		Store:           deviceStore,
 		Log:             log,
-		recvLog:         logNoop.Sub("Recv"),
-		sendLog:         logNoop.Sub("Send"),
+		recvLog:         socketLog.Sub("Recv"),
+		sendLog:         socketLog.Sub("Send"),
 		uniqueID:        fmt.Sprintf("%d.%d-", randomBytes[0], randomBytes[1]),
 		responseWaiters: make(map[string]chan<- *waBinary.Node),
 		eventHandlers:   make([]wrappedEventHandler, 0, 1),
