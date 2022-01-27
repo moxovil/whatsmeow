@@ -65,7 +65,7 @@ func main() {
 		return
 	}
 
-	cli = whatsmeow.NewClient(device, waLog.Stdout("Client", logLevel, true))
+	cli = whatsmeow.NewClient(device, waLog.Stdout("Client", logLevel, true), true)
 
 	ch, err := cli.GetQRChannel(context.Background())
 	if err != nil {
@@ -77,7 +77,7 @@ func main() {
 		go func() {
 			for evt := range ch {
 				if evt.Event == "code" {
-					qrterminal.GenerateHalfBlock(evt.Code, qrterminal.L, os.Stdout)
+					//qrterminal.GenerateHalfBlock(evt.Code, qrterminal.L, os.Stdout)
 				} else {
 					log.Infof("QR channel result: %s", evt.Event)
 				}
